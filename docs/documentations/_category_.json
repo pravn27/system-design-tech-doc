@@ -1,0 +1,8 @@
+{
+  "label": "Documentations",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Contains complete System Design documentations, references & related links."
+  }
+}

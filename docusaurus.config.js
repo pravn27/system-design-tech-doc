@@ -74,21 +74,14 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        // title: "JavaScript",
         logo: {
           alt: "Logo",
-          src: "/img/logo.svg",
+          src: "/img/logo.png",
         },
         items: [
-          // {
-          //   type: "docSidebar",
-          //   sidebarId: "sidebarDocsId",
-          //   position: "left",
-          //   label: "About VS System",
-          // },
           {
-            to: "/docs/category/js-documentations",
-            label: "Javascript",
+            to: "/docs/category/documentations",
+            label: "System Design",
             position: "left",
           },
           {
@@ -111,11 +104,11 @@ const config = {
         style: "dark",
         links: [
           {
-            title: "Javascript",
+            title: "System Design",
             items: [
               {
-                label: "Javascript",
-                to: "/docs/category/js-documentations",
+                label: "Frontend System Design",
+                to: "/docs/category/documentations",
               },
             ],
           },
@@ -133,7 +126,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} JavaScript tech docs. Built with Docusaurus`,
+        copyright: `Copyright © ${new Date().getFullYear()} Frontend System Design tech docs. Built with Docusaurus`,
       },
       prism: {
         theme: prismThemes.github,

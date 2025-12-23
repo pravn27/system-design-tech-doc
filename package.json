@@ -1,8 +1,7 @@
 {
   "name": "system-design-tech-doc",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
-  "homepage": "https://github.com/pravn27/system-design-tech-doc",
   "scripts": {
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
@@ -15,8 +14,8 @@
     "write-heading-ids": "docusaurus write-heading-ids"
   },
   "dependencies": {
-    "@docusaurus/core": "3.7.0",
-    "@docusaurus/preset-classic": "3.7.0",
+    "@docusaurus/core": "^3.8.1",
+    "@docusaurus/preset-classic": "^3.8.1",
     "@easyops-cn/docusaurus-search-local": "^0.48.5",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
@@ -25,8 +24,8 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "3.7.0",
-    "@docusaurus/types": "3.7.0"
+    "@docusaurus/module-type-aliases": "^3.8.1",
+    "@docusaurus/types": "^3.8.1"
   },
   "browserslist": {
     "production": [
