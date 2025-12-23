@@ -27,7 +27,6 @@ const config = {
   projectName: "system-design-tech-doc", // Usually your repo name.
   deploymentBranch: "gh-pages",
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
   trailingSlash: false,
 
   // Even if you don't use internationalization, you can use this field to set
