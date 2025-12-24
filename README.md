@@ -1,4 +1,4 @@
-# Frontend System Design complete documentation, related & reference links
+# System Design complete documentation, related & reference links
 
 ## Build technical documentation with [Docusaurus](https://docusaurus.io/)
 

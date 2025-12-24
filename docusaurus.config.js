@@ -106,7 +106,7 @@ const config = {
             title: "System Design",
             items: [
               {
-                label: "Frontend System Design",
+                label: "System Design",
                 to: "/docs/category/documentations",
               },
             ],
