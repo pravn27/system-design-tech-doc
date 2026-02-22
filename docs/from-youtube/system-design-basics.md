@@ -11,7 +11,9 @@ sidebar_position: 1
 
 ## What is System Design?
 
-**Purpose:** System design is the process of defining the architecture, components, and interactions of a system to satisfy specific requirements. It answers the question — _"How do we build a software system that works reliably at scale?"_
+> **Definition:** System design is the process of defining the architecture, components, modules, interfaces, and data flow of a system to meet specified requirements.
+
+**Purpose:** It answers the question — _"How do we build a software system that works reliably at scale?"_
 
 At a high level, system design deals with:
 
@@ -30,7 +32,9 @@ Think about **YouTube** — when you open the app and tap on a video, a lot happ
 
 ### What is a Client?
 
-**Purpose:** A client is the platform or medium through which an end user interacts with a product.
+> **Definition:** A client is any device or software application (mobile app, web browser, smart TV) that sends requests to a server and displays the response to the user.
+
+**Purpose:** It acts as the platform or medium through which an end user interacts with a product.
 
 - A **mobile app** (Android / iOS) running YouTube
 - A **web browser** (Chrome, Safari) where you type `www.youtube.com`
@@ -40,7 +44,9 @@ All of these are clients — they are the _front door_ through which users acces
 
 ### What is a Server?
 
-**Purpose:** A server is a machine (or set of machines) that contains the business logic and processes requests from clients.
+> **Definition:** A server is a machine (or set of machines) that listens for incoming requests, executes business logic, and returns responses.
+
+**Purpose:** It contains the core logic and processing power that makes a product work behind the scenes.
 
 In simple terms, if you write a piece of code on your laptop that takes an input image and returns a filtered version of it — your laptop is acting as a server.
 
@@ -85,7 +91,9 @@ graph LR
 
 ## API — Application Programming Interface
 
-**Purpose:** An API is the intermediary (the "waiter") that allows the client and server to communicate without the client needing to know how the server works internally.
+> **Definition:** An API (Application Programming Interface) is a set of rules and protocols that allows two software components to communicate with each other using requests and responses.
+
+**Purpose:** It acts as the intermediary (the "waiter") that allows the client and server to communicate without the client needing to know how the server works internally.
 
 ### How it Works
 
@@ -126,7 +134,9 @@ When you click on a video thumbnail on YouTube:
 
 ### Frontend
 
-**Purpose:** The frontend is the user-facing part of the product — everything the user can see and interact with.
+> **Definition:** The frontend is the client-side layer of an application — the code that runs on the user's device (browser or mobile app) and renders the visual interface.
+
+**Purpose:** It is the user-facing part of the product — everything the user can see and interact with.
 
 - Built using **Swift** (iOS), **Kotlin/Java** (Android), **JavaScript/HTML/CSS** (Web)
 - Handles UI rendering, button clicks, navigation
@@ -134,7 +144,9 @@ When you click on a video thumbnail on YouTube:
 
 ### Backend
 
-**Purpose:** The backend is the server-side logic that the user never directly interacts with. It processes requests, applies business logic, and returns results.
+> **Definition:** The backend is the server-side layer of an application — the code that runs on the server, processes data, interacts with databases, and returns results to the frontend.
+
+**Purpose:** It handles the business logic that the user never directly interacts with — processing requests, applying rules, and returning results.
 
 - Built using **Java**, **Node.js**, **Python**, **PHP**, **Go**, etc.
 - Contains the core business logic (e.g., applying AI filters to an image, sorting a feed, processing payments)
@@ -177,7 +189,9 @@ graph TB
 
 ## Database
 
-**Purpose:** A database is where all the data required by your application is stored persistently. Just like a kitchen stores all the raw ingredients needed to prepare dishes, a database stores all the data the server needs to generate responses.
+> **Definition:** A database is an organized collection of structured data stored electronically, designed for efficient retrieval, insertion, updating, and deletion of data.
+
+**Purpose:** It persistently stores all the data required by your application. Just like a kitchen stores all the raw ingredients needed to prepare dishes, a database stores all the data the server needs to generate responses.
 
 ### How it Fits in the Flow
 
@@ -206,7 +220,9 @@ graph LR
 
 ## Cache
 
-**Purpose:** A cache is a fast, temporary storage layer that holds frequently accessed data so the server doesn't have to query the slower database every time.
+> **Definition:** A cache is a high-speed temporary storage layer (typically in-memory / RAM) that stores copies of frequently accessed data closer to the consumer.
+
+**Purpose:** It holds frequently accessed data so the server doesn't have to query the slower database every time, significantly improving response speed.
 
 ### Why Cache?
 
@@ -254,7 +270,9 @@ graph LR
 
 ## Scaling — Vertical vs Horizontal
 
-**Purpose:** Scaling is the process of increasing your system's capacity to handle growing traffic and load.
+> **Definition:** Scaling is the ability of a system to handle increased load by adding resources — either by upgrading existing hardware (vertical) or by adding more machines (horizontal).
+
+**Purpose:** It ensures your system can handle growing traffic and load without degrading performance or going down.
 
 ### Vertical Scaling (Scale Up)
 
@@ -335,7 +353,9 @@ graph TB
 
 ## Single Point of Failure (SPOF)
 
-**Purpose:** A single point of failure is any component in your system where, if it fails, the **entire system goes down**. Good system design eliminates SPOFs.
+> **Definition:** A Single Point of Failure (SPOF) is any single component in a system that, if it stops working, causes the entire system to become unavailable.
+
+**Purpose:** Identifying and eliminating SPOFs is critical to building reliable systems. Good system design ensures no single component can bring down the whole system.
 
 ### Why it Matters
 
@@ -380,7 +400,9 @@ graph TB
 
 ## Auto-Scaling
 
-**Purpose:** Auto-scaling automatically adjusts the number of servers based on current traffic load — scaling up during peak times and scaling down during low traffic to save costs.
+> **Definition:** Auto-scaling is a cloud computing feature that automatically increases or decreases the number of active servers (or compute resources) based on real-time traffic demand.
+
+**Purpose:** It automatically adjusts the number of servers based on current traffic load — scaling up during peak times and scaling down during low traffic to save costs.
 
 ### How it Works
 
@@ -420,7 +442,9 @@ graph LR
 
 ## Load Balancer
 
-**Purpose:** A load balancer distributes incoming API requests evenly across multiple servers so that no single server gets overwhelmed.
+> **Definition:** A load balancer is a networking component that sits between the client and a group of servers, distributing incoming network traffic across multiple servers using algorithms like round-robin or consistent hashing.
+
+**Purpose:** It distributes incoming API requests evenly across multiple servers so that no single server gets overwhelmed.
 
 ### Why is it Needed?
 
@@ -486,11 +510,15 @@ sequenceDiagram
 
 ### Synchronous (Sync)
 
+> **Definition:** Synchronous communication is a blocking interaction model where the sender waits idle until the receiver processes the request and returns a response.
+
 **Purpose:** The client sends a request and **waits (blocks)** until it gets a response. Nothing else can happen in the meantime.
 
 **Analogy:** You stand in a pizza queue, place your order, and **must wait in line** until your pizza is ready. You can't leave or do anything else.
 
 ### Asynchronous (Async)
+
+> **Definition:** Asynchronous communication is a non-blocking interaction model where the sender fires a request and continues with other work, receiving a notification or callback when the response is ready.
 
 **Purpose:** The client sends a request and is **immediately free** to do other things. It gets notified when the response is ready.
 
@@ -537,7 +565,9 @@ sequenceDiagram
 
 ## Message Queue (e.g., Kafka, RabbitMQ)
 
-**Purpose:** A message queue is a component that enables asynchronous processing by holding tasks in a queue until servers (consumers) are ready to process them.
+> **Definition:** A message queue is a middleware component that temporarily stores messages (tasks/events) sent by producers, allowing consumers to retrieve and process them at their own pace.
+
+**Purpose:** It enables asynchronous processing by holding tasks in a queue until servers (consumers) are ready to process them — decoupling the sender from the receiver.
 
 ### How it Works
 
@@ -585,6 +615,8 @@ graph LR
 
 ### Stateful
 
+> **Definition:** A stateful architecture is one where the server retains session data or context about a specific client between requests, tying that client to a particular server instance.
+
 **Purpose:** The server maintains information (state) about the client across requests. The client's requests must always go to the **same server**.
 
 **Problem:** If that specific server goes down, the client's session/data is lost — no other server knows about this client.
@@ -593,7 +625,9 @@ graph LR
 
 ### Stateless
 
-**Purpose:** The server does NOT store any client state. Instead, the client sends all necessary identification (e.g., a **JWT token**) with every request. Any server can handle any request.
+> **Definition:** A stateless architecture is one where the server stores no client-specific data between requests. Each request carries all the information (e.g., JWT token) the server needs to process it independently.
+
+**Purpose:** The server does NOT store any client state. Instead, the client sends all necessary identification with every request. Any server can handle any request.
 
 **Analogy:** Instead of relying on one staff member, you get a **membership card**. You show it to any staff member at the entrance, and they verify your identity and give you the discount.
 
@@ -639,6 +673,8 @@ graph TB
 
 ### Monolithic Architecture
 
+> **Definition:** A monolithic architecture is a software design pattern where the entire application — all features, modules, and logic — is built, deployed, and run as a single, tightly coupled unit.
+
 **Purpose:** The entire application is built and deployed as a **single unit**. All features — authentication, user feed, profile, orders — live in one codebase and run as one process.
 
 **Analogy:** A single large room where customers, chefs, raw materials, and reception all operate together. Everything is interconnected.
@@ -657,6 +693,8 @@ graph TB
 - As the codebase grows, it becomes harder to maintain
 
 ### Microservices Architecture
+
+> **Definition:** A microservices architecture is a software design pattern where the application is decomposed into small, loosely coupled, independently deployable services — each owning a specific business capability.
 
 **Purpose:** The application is split into small, independent services, each responsible for a specific feature. Each service can be developed, deployed, and scaled independently.
 
