@@ -227,25 +227,26 @@ When **Ronaldo posts on Instagram**, millions of people will view it within minu
 
 Similarly, after a **FIFA World Cup final**, the highlights video is cached because the system knows it will be accessed millions of times.
 
+**Cache Hit (Data found in cache):**
+
 ```mermaid
-graph TD
-    S["🖥️ Server"] -- "1. Check cache first" --> Cache["⚡ Cache\n(Fast - RAM)"]
+graph LR
+    S1["🖥️ Server"] -- "1. Check cache" --> C1["⚡ Cache"]
+    C1 -- "2. ✅ Data found!" --> S1
 
-    Cache -- "✅ Cache Hit\n(Data found!)" --> S
-    Cache -- "❌ Cache Miss\n(Data not found)" --> DB[("🗄️ Database\n(Slower - Disk)")]
-    DB -- "2. Fetch data" --> Cache
-    Cache -- "3. Store for next time\n+ Return data" --> S
+    style C1 fill:#c8e6c9,stroke:#2e7d32
+```
 
-    subgraph "🧂 Restaurant Analogy"
-        Chef2["👨‍🍳 Chef"]
-        Salt["🧂 Salt & Pepper\n(Nearby = Cache)"]
-        Kitchen["🏠 Kitchen\n(Far = Database)"]
-    end
+**Cache Miss (Data not in cache):**
 
-    Chef2 -. "Quick grab" .-> Salt
-    Salt -. "Ran out? Refill from" .-> Kitchen
+```mermaid
+graph LR
+    S2["🖥️ Server"] -- "1. Check cache" --> C2["⚡ Cache"]
+    C2 -- "2. ❌ Not found" --> DB[("🗄️ Database")]
+    DB -- "3. Return data" --> C2
+    C2 -- "4. Store + Return" --> S2
 
-    style Cache fill:#fff9c4,stroke:#f9a825
+    style C2 fill:#ffcdd2,stroke:#c62828
     style DB fill:#e8f5e9,stroke:#388e3c
 ```
 
