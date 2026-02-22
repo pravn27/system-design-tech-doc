@@ -274,6 +274,10 @@ graph LR
 
 **Purpose:** It ensures your system can handle growing traffic and load without degrading performance or going down.
 
+:::tip Key Principle
+When designing a system, always ensure that **every component** is protected against a Single Point of Failure (SPOF). No single component should be capable of bringing down the entire system.
+:::
+
 ### Vertical Scaling (Scale Up)
 
 Increase the power of your **existing** machine.
@@ -286,6 +290,22 @@ Increase the power of your **existing** machine.
 
 **Analogy 2:** You have a restaurant on the ground floor — you rent out the first floor in the **same building** to seat more customers.
 
+```mermaid
+graph TB
+    subgraph Before ["Before"]
+        SB["🖥️ Server\n4GB RAM | 512GB HDD\n⚡ Handles 100 req/s"]
+    end
+
+    subgraph After ["After Vertical Scaling"]
+        SA["🖥️ Same Server\n16GB RAM | 1TB SSD | GPU\n⚡ Handles 500 req/s"]
+    end
+
+    Before -- "Upgrade ⬆️\n(Same machine, better specs)" --> After
+
+    style Before fill:#ffebee,stroke:#c62828
+    style After fill:#e8f5e9,stroke:#2e7d32
+```
+
 ### Horizontal Scaling (Scale Out)
 
 Add **more machines** to distribute the load.
@@ -295,6 +315,41 @@ Add **more machines** to distribute the load.
 **Analogy:** Instead of overworking one chef, you hire 4 more chefs.
 
 **Analogy 2:** Instead of adding floors to the same building, you open a **new restaurant in another location**.
+
+```mermaid
+graph LR
+    LB["⚖️ Load\nBalancer"] --> S1["🖥️ Server 1"]
+    LB --> S2["🖥️ Server 2"]
+    LB --> S3["🖥️ Server 3"]
+    LB --> S4["🖥️ Server 4"]
+
+    style LB fill:#fff9c4,stroke:#f9a825
+```
+
+> Each server handles ~100 req/s → Together they handle **400 req/s**. Need more? Just add another server.
+
+### Hybrid Approach (What Big Companies Use)
+
+In practice, companies like Google, Netflix, and Amazon use a **combination of both**:
+
+- **Horizontal scaling** — multiple powerful machines across regions
+- **Vertical scaling** — each machine is at its best possible configuration
+
+```mermaid
+graph TB
+    LB["⚖️ Load Balancer"] --> S1 & S2 & S3
+
+    S1["🖥️ Server 1\n16GB RAM | SSD"]
+    S2["🖥️ Server 2\n16GB RAM | SSD"]
+    S3["🖥️ Server 3\n16GB RAM | SSD"]
+
+    style LB fill:#fff9c4,stroke:#f9a825
+    style S1 fill:#e3f2fd,stroke:#1565c0
+    style S2 fill:#e3f2fd,stroke:#1565c0
+    style S3 fill:#e3f2fd,stroke:#1565c0
+```
+
+> **Horizontal** = multiple machines (no SPOF). **Vertical** = each machine is powerful (max throughput per node).
 
 ### Comparison
 
@@ -310,44 +365,6 @@ Add **more machines** to distribute the load.
 ### Real-time Example
 
 **WhatsApp** handles millions of messages daily. A single server, no matter how powerful, cannot handle that. WhatsApp uses **horizontal scaling** — hundreds of servers distributed across data centers worldwide. If one server goes down, others pick up the load seamlessly.
-
-```mermaid
-graph TB
-    subgraph VS ["⬆️ Vertical Scaling (Scale Up)"]
-        direction TB
-        S1_before["🖥️ Server\n8GB RAM\n512GB Storage"]
-        S1_after["🖥️ Server\n16GB RAM\n1TB SSD + GPU"]
-        S1_before -- "Upgrade ⬆️" --> S1_after
-    end
-
-    subgraph HS ["➡️ Horizontal Scaling (Scale Out)"]
-        direction LR
-        S2["🖥️ Server 1"]
-        S3["🖥️ Server 2"]
-        S4["🖥️ Server 3"]
-        S5["🖥️ Server 4"]
-    end
-
-    subgraph VSB ["🏢 Building Analogy - Vertical"]
-        direction TB
-        GF["Ground Floor"]
-        F1["1st Floor"]
-        F2["2nd Floor"]
-        GF --- F1 --- F2
-    end
-
-    subgraph HSB ["🏘️ Building Analogy - Horizontal"]
-        direction LR
-        B1["🏢 Building 1\n(Location A)"]
-        B2["🏢 Building 2\n(Location B)"]
-        B3["🏢 Building 3\n(Location C)"]
-    end
-
-    style VS fill:#e3f2fd,stroke:#1565c0
-    style HS fill:#fce4ec,stroke:#c62828
-    style VSB fill:#e3f2fd,stroke:#1565c0
-    style HSB fill:#fce4ec,stroke:#c62828
-```
 
 ---
 
