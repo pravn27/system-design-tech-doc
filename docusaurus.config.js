@@ -14,6 +14,9 @@ const config = {
   tagline:
     "Everything about System Design, its reference links & technical documentations",
   favicon: "/img/favicon.ico",
+  markdown: {
+    mermaid: true,
+  },
 
   // Set the production url of your site here
   url: "https://pravn27.github.io",
@@ -133,20 +136,12 @@ const config = {
       },
     }),
   themes: [
-    // ... Your other themes.
+    "@docusaurus/theme-mermaid",
     [
       require("@easyops-cn/docusaurus-search-local"),
       /** @type {import("@easyops-cn/docusaurus-search-local").PluginOptions} */
       ({
-        // ... Your options.
-        // `hashed` is recommended as long-term-cache of index file is possible.
         hashed: true,
-
-        // For Docs using Chinese, it is recomended to set:
-        // language: ["en", "zh"],
-
-        // If you're using `noIndex: true`, set `forceIgnoreNoIndex` to enable local index:
-        // forceIgnoreNoIndex: true,
       }),
     ],
   ],

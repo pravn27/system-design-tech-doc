@@ -55,6 +55,31 @@ In simple terms, if you write a piece of code on your laptop that takes an input
 
 You don't walk into the kitchen and talk to the chef directly. You tell the **waiter** what you want, the waiter relays it to the chef, and the chef prepares your order and sends it back through the waiter.
 
+```mermaid
+graph LR
+    subgraph "🍽️ Restaurant Analogy"
+        You["🧑 You\n(Customer)"]
+        Waiter["🤵 Waiter"]
+        Chef["👨‍🍳 Chef"]
+    end
+
+    You -- "I want pizza" --> Waiter
+    Waiter -- "Customer wants pizza" --> Chef
+    Chef -- "Pizza ready" --> Waiter
+    Waiter -- "Here's your pizza" --> You
+
+    subgraph "💻 Technical Equivalent"
+        Client["📱 Client\n(App / Browser)"]
+        API["🔌 API"]
+        Server["🖥️ Server"]
+    end
+
+    Client -- "Request" --> API
+    API -- "Forward Request" --> Server
+    Server -- "Response" --> API
+    API -- "Return Response" --> Client
+```
+
 ---
 
 ## API — Application Programming Interface
@@ -69,6 +94,19 @@ You don't walk into the kitchen and talk to the chef directly. You tell the **wa
 4. The **API** sends the response back to the **client**
 
 In technical terms, we call the input a **request** and the output a **response**.
+
+```mermaid
+sequenceDiagram
+    participant C as 📱 Client
+    participant A as 🔌 API
+    participant S as 🖥️ Server
+
+    C->>A: Request (e.g., "Play video XYZ")
+    A->>S: Forward request
+    S->>S: Process business logic
+    S-->>A: Response (video data + metadata)
+    A-->>C: Return response to client
+```
 
 ### Real-time Example
 
@@ -109,6 +147,31 @@ Think of a **car**:
 
 You press the brake (frontend interaction), and the car stops (backend logic). You don't need to understand hydraulic braking systems to drive.
 
+```mermaid
+graph TB
+    subgraph Frontend ["🎨 Frontend (What user sees)"]
+        MA["📱 Mobile App\n(Swift / Kotlin)"]
+        WB["🌐 Web Browser\n(JS / HTML / CSS)"]
+        TV["📺 Smart TV App"]
+    end
+
+    subgraph Backend ["⚙️ Backend (Hidden from user)"]
+        SV["🖥️ Server\n(Java / Node.js / Python)"]
+        BL["📋 Business Logic\n(Processing, Filters, Sorting)"]
+    end
+
+    MA -- "API Request" --> SV
+    WB -- "API Request" --> SV
+    TV -- "API Request" --> SV
+    SV --> BL
+    BL -- "API Response" --> MA
+    BL -- "API Response" --> WB
+    BL -- "API Response" --> TV
+
+    style Frontend fill:#e1f5fe,stroke:#0288d1
+    style Backend fill:#fff3e0,stroke:#f57c00
+```
+
 ---
 
 ## Database
@@ -126,6 +189,17 @@ You press the brake (frontend interaction), and the car stops (backend logic). Y
 ### Real-time Example
 
 On YouTube, every video, thumbnail, title, description, like count, and comment is stored in databases. When you open a channel page, the server queries the database to fetch all 277 videos and their metadata, then returns the relevant data to your client.
+
+```mermaid
+graph LR
+    C["📱 Client"] -- "API Request" --> S["🖥️ Server\n(Business Logic)"]
+    S -- "Query data" --> DB[("🗄️ Database\n(All Data)")]
+    DB -- "Return data" --> S
+    S -- "Process + Apply logic" --> S
+    S -- "API Response" --> C
+
+    style DB fill:#e8f5e9,stroke:#388e3c
+```
 
 ---
 
@@ -151,6 +225,28 @@ On YouTube, every video, thumbnail, title, description, like count, and comment 
 When **Ronaldo posts on Instagram**, millions of people will view it within minutes. Instead of hitting the database for every single request, Instagram caches that post. Every subsequent viewer gets it from the cache (cache hit) — making it blazing fast.
 
 Similarly, after a **FIFA World Cup final**, the highlights video is cached because the system knows it will be accessed millions of times.
+
+```mermaid
+graph TD
+    S["🖥️ Server"] -- "1. Check cache first" --> Cache["⚡ Cache\n(Fast - RAM)"]
+
+    Cache -- "✅ Cache Hit\n(Data found!)" --> S
+    Cache -- "❌ Cache Miss\n(Data not found)" --> DB[("🗄️ Database\n(Slower - Disk)")]
+    DB -- "2. Fetch data" --> Cache
+    Cache -- "3. Store for next time\n+ Return data" --> S
+
+    subgraph "🧂 Restaurant Analogy"
+        Chef2["👨‍🍳 Chef"]
+        Salt["🧂 Salt & Pepper\n(Nearby = Cache)"]
+        Kitchen["🏠 Kitchen\n(Far = Database)"]
+    end
+
+    Chef2 -. "Quick grab" .-> Salt
+    Salt -. "Ran out? Refill from" .-> Kitchen
+
+    style Cache fill:#fff9c4,stroke:#f9a825
+    style DB fill:#e8f5e9,stroke:#388e3c
+```
 
 ---
 
@@ -195,6 +291,44 @@ Add **more machines** to distribute the load.
 
 **WhatsApp** handles millions of messages daily. A single server, no matter how powerful, cannot handle that. WhatsApp uses **horizontal scaling** — hundreds of servers distributed across data centers worldwide. If one server goes down, others pick up the load seamlessly.
 
+```mermaid
+graph TB
+    subgraph VS ["⬆️ Vertical Scaling (Scale Up)"]
+        direction TB
+        S1_before["🖥️ Server\n8GB RAM\n512GB Storage"]
+        S1_after["🖥️ Server\n16GB RAM\n1TB SSD + GPU"]
+        S1_before -- "Upgrade ⬆️" --> S1_after
+    end
+
+    subgraph HS ["➡️ Horizontal Scaling (Scale Out)"]
+        direction LR
+        S2["🖥️ Server 1"]
+        S3["🖥️ Server 2"]
+        S4["🖥️ Server 3"]
+        S5["🖥️ Server 4"]
+    end
+
+    subgraph VSB ["🏢 Building Analogy - Vertical"]
+        direction TB
+        GF["Ground Floor"]
+        F1["1st Floor"]
+        F2["2nd Floor"]
+        GF --- F1 --- F2
+    end
+
+    subgraph HSB ["🏘️ Building Analogy - Horizontal"]
+        direction LR
+        B1["🏢 Building 1\n(Location A)"]
+        B2["🏢 Building 2\n(Location B)"]
+        B3["🏢 Building 3\n(Location C)"]
+    end
+
+    style VS fill:#e3f2fd,stroke:#1565c0
+    style HS fill:#fce4ec,stroke:#c62828
+    style VSB fill:#e3f2fd,stroke:#1565c0
+    style HSB fill:#fce4ec,stroke:#c62828
+```
+
 ---
 
 ## Single Point of Failure (SPOF)
@@ -218,6 +352,28 @@ Use **horizontal scaling** and **replication**:
 
 Major companies like **Netflix** deploy their servers across multiple AWS regions worldwide. If the US-East data center goes down, US-West or EU servers continue serving users. This is why Netflix rarely has a complete global outage.
 
+```mermaid
+graph TB
+    subgraph SPOF ["❌ Single Point of Failure (Bad)"]
+        C1["📱 Client"] --> S_one["🖥️ Single Server"]
+        S_one -- "Server crashes 💥" --> Down["🚫 Entire System DOWN"]
+    end
+
+    subgraph NoSPOF ["✅ No SPOF with Horizontal Scaling (Good)"]
+        C2["📱 Client"] --> LB["⚖️ Load Balancer"]
+        LB --> S_a["🖥️ Server 1 ✅"]
+        LB --> S_b["🖥️ Server 2 💥 Down"]
+        LB --> S_c["🖥️ Server 3 ✅"]
+        LB --> S_d["🖥️ Server 4 ✅"]
+        S_a --> Up["✅ System keeps running!"]
+        S_c --> Up
+        S_d --> Up
+    end
+
+    style SPOF fill:#ffebee,stroke:#c62828
+    style NoSPOF fill:#e8f5e9,stroke:#2e7d32
+```
+
 ---
 
 ## Auto-Scaling
@@ -234,6 +390,29 @@ Cloud providers like **AWS**, **Google Cloud**, and **Azure** offer auto-scaling
 ### Real-time Example
 
 During **Amazon Prime Day**, traffic surges massively. AWS auto-scaling detects the increased load and spins up hundreds of additional servers automatically. Once the sale ends and traffic normalizes, those extra servers are decommissioned. The business only pays for what it uses.
+
+```mermaid
+graph LR
+    subgraph Normal ["📊 Normal Traffic"]
+        N_LB["⚖️ Load Balancer"] --> N_S1["🖥️ Server 1"]
+        N_LB --> N_S2["🖥️ Server 2"]
+    end
+
+    Normal -- "🔥 Traffic spikes!\nAuto-scaling triggers" --> Peak
+
+    subgraph Peak ["📈 Peak Traffic (Auto-Scaled)"]
+        P_LB["⚖️ Load Balancer"] --> P_S1["🖥️ Server 1"]
+        P_LB --> P_S2["🖥️ Server 2"]
+        P_LB --> P_S3["🖥️ Server 3 ✨ New"]
+        P_LB --> P_S4["🖥️ Server 4 ✨ New"]
+        P_LB --> P_S5["🖥️ Server 5 ✨ New"]
+    end
+
+    Peak -- "📉 Traffic drops\nScale down" --> Normal
+
+    style Normal fill:#e3f2fd,stroke:#1565c0
+    style Peak fill:#fff3e0,stroke:#e65100
+```
 
 ---
 
@@ -257,6 +436,47 @@ Without a load balancer, all requests might hit **Server 1** while **Server 2, 3
 ### Real-time Example
 
 When you search on **Google**, your request hits a load balancer first. Google has thousands of servers worldwide. The load balancer routes your request to the nearest, least-loaded server — which is why Google Search responds in milliseconds regardless of how many people are searching simultaneously.
+
+```mermaid
+graph TB
+    subgraph Without ["❌ Without Load Balancer"]
+        C_bad["📱📱📱 All Requests"] --> S_bad1["🖥️ Server 1\n🔥 Overloaded!"]
+        S_bad2["🖥️ Server 2\n😴 Idle"]
+        S_bad3["🖥️ Server 3\n😴 Idle"]
+    end
+
+    subgraph With ["✅ With Load Balancer"]
+        C_good["📱📱📱 All Requests"] --> LB["⚖️ Load Balancer\n(Kitchen Manager)"]
+        LB -- "Request 1" --> S_good1["🖥️ Server 1\n👨‍🍳 Chef 1"]
+        LB -- "Request 2" --> S_good2["🖥️ Server 2\n👨‍🍳 Chef 2"]
+        LB -- "Request 3" --> S_good3["🖥️ Server 3\n👨‍🍳 Chef 3"]
+    end
+
+    style Without fill:#ffebee,stroke:#c62828
+    style With fill:#e8f5e9,stroke:#2e7d32
+```
+
+```mermaid
+sequenceDiagram
+    participant C as 📱 Client
+    participant LB as ⚖️ Load Balancer
+    participant S1 as 🖥️ Server 1
+    participant S2 as 🖥️ Server 2
+    participant S3 as 🖥️ Server 3
+
+    C->>LB: Request 1 (Pizza)
+    LB->>S1: Assign to Server 1
+    C->>LB: Request 2 (Pasta)
+    LB->>S2: Assign to Server 2 (S1 busy)
+    C->>LB: Request 3 (Noodles)
+    LB->>S3: Assign to Server 3 (S1,S2 busy)
+    S1-->>LB: Response 1 ready
+    LB-->>C: Return Response 1
+    S2-->>LB: Response 2 ready
+    LB-->>C: Return Response 2
+    S3-->>LB: Response 3 ready
+    LB-->>C: Return Response 3
+```
 
 ---
 
@@ -290,6 +510,27 @@ When you **upload a video to YouTube**:
 2. Once uploaded, **you're free** — YouTube processes the video asynchronously in the background (encoding to multiple resolutions, copyright checks, thumbnail generation)
 3. You get **notified** when processing is complete and the video is ready to publish
 
+```mermaid
+sequenceDiagram
+    participant C as 📱 Client
+
+    rect rgb(255, 235, 238)
+        Note over C: ⏳ Synchronous (Blocking)
+        C->>+Server: Request (Order pizza)
+        Note over C: Client BLOCKED ⛔<br/>Cannot do anything...
+        Server-->>-C: Response (Pizza ready)
+        Note over C: Now client can proceed
+    end
+
+    rect rgb(232, 245, 233)
+        Note over C: ⚡ Asynchronous (Non-blocking)
+        C->>Server: Request (Order pizza)
+        Note over C: Client FREE ✅<br/>Token #20 received
+        Note over C: Client does other tasks...<br/>Browse phone, sit down
+        Server-->>C: Notification: "Order #20 ready!"
+    end
+```
+
 ---
 
 ## Message Queue (e.g., Kafka, RabbitMQ)
@@ -308,6 +549,33 @@ When you **upload a video to YouTube**:
 ### Real-time Example
 
 When you **send a message on WhatsApp** to someone who is offline, the message doesn't disappear. It's placed in a **message queue**. When the recipient comes online, the queue delivers the message. This is asynchronous processing powered by message queues.
+
+```mermaid
+graph LR
+    subgraph Producers ["📥 Incoming Orders"]
+        O1["Order 1: Pizza"]
+        O2["Order 2: Pasta"]
+        O3["Order 3: Noodles"]
+        O4["Order 4: Burger"]
+        O5["Order 5: Salad"]
+    end
+
+    subgraph Queue ["📋 Message Queue (Kafka / RabbitMQ)"]
+        Q["🔄 Task Queue\n\nOrder 3 → Order 4 → Order 5\n(waiting to be picked)"]
+    end
+
+    subgraph Consumers ["👨‍🍳 Servers (Consumers)"]
+        S1["🖥️ Server 1\nProcessing: Order 1"]
+        S2["🖥️ Server 2\nProcessing: Order 2"]
+    end
+
+    O1 & O2 & O3 & O4 & O5 --> Q
+    Q -- "Pick next task" --> S1
+    Q -- "Pick next task" --> S2
+
+    style Queue fill:#fff9c4,stroke:#f9a825
+    style Consumers fill:#e8f5e9,stroke:#388e3c
+```
 
 ---
 
@@ -339,6 +607,29 @@ When you **send a message on WhatsApp** to someone who is offline, the message d
 ### Real-time Example
 
 When you browse **Amazon.com**, your authentication token (JWT) is sent with every request. Whether your request lands on Server A in Virginia or Server B in Oregon, both can verify your identity and serve your personalized page. This is stateless architecture in action.
+
+```mermaid
+graph TB
+    subgraph Stateful ["❌ Stateful Architecture"]
+        C_sf["📱 Client\n(You)"]
+        C_sf -- "Always goes to\nthis server only" --> S_sf2["🖥️ Server 2\n✅ Knows this client\n(Stores user state)"]
+        S_sf1["🖥️ Server 1\n❓ Doesn't know you"]
+        S_sf3["🖥️ Server 3\n❓ Doesn't know you"]
+        S_sf2 -- "💥 Goes down!" --> Problem["🚫 Client state LOST!\nNo other server can help"]
+    end
+
+    subgraph Stateless ["✅ Stateless Architecture"]
+        C_sl["📱 Client\n(Sends JWT token\nwith every request)"]
+        C_sl -- "Request + Token" --> LB_sl["⚖️ Load Balancer"]
+        LB_sl --> S_sl1["🖥️ Server 1\n🔑 Verifies token ✅"]
+        LB_sl --> S_sl2["🖥️ Server 2\n🔑 Verifies token ✅"]
+        LB_sl --> S_sl3["🖥️ Server 3\n🔑 Verifies token ✅"]
+        Note_sl["Any server can handle\nany request!"]
+    end
+
+    style Stateful fill:#ffebee,stroke:#c62828
+    style Stateless fill:#e8f5e9,stroke:#2e7d32
+```
 
 ---
 
@@ -396,35 +687,71 @@ When you browse **Amazon.com**, your authentication token (JWT) is sent with eve
 
 **Netflix** started as a monolithic application. As it grew to serve 200+ million users, they migrated to microservices. Now, the **recommendation engine**, **video streaming**, **user authentication**, **billing**, and **content catalog** are all separate microservices. If the recommendation engine has a bug, you can still stream videos — the streaming service is completely independent.
 
+```mermaid
+graph TB
+    subgraph Mono ["🏢 Monolithic Architecture"]
+        M_ALL["Single Deployment Unit\n\n🔐 Auth\n📰 User Feed\n👤 Profile\n🛒 Orders\n💳 Payments\n\nAll tightly coupled\nin ONE codebase"]
+        M_BUG["🐛 Bug in Orders?\n💥 Entire system crashes!"]
+        M_ALL --> M_BUG
+    end
+
+    subgraph Micro ["🏘️ Microservices Architecture"]
+        direction LR
+        MS1["🔐 Auth\nService"]
+        MS2["📰 Feed\nService"]
+        MS3["👤 Profile\nService"]
+        MS4["🛒 Orders\nService"]
+        MS5["💳 Payment\nService"]
+        MS4_bug["🐛 Orders down?\n✅ Others still work!"]
+        MS4 --> MS4_bug
+    end
+
+    style Mono fill:#ffebee,stroke:#c62828
+    style Micro fill:#e8f5e9,stroke:#2e7d32
+```
+
 ---
 
 ## Putting It All Together — Request Flow in a Real System
 
 Here's how all the components work together when you open YouTube and play a video:
 
-```
-User (Client)
-    │
-    ▼
-[Mobile App / Web Browser]  ← Frontend
-    │
-    │  API Request: "Play video XYZ"
-    ▼
-[Load Balancer]  ← Distributes request to least-loaded server
-    │
-    ▼
-[Server (Backend)]  ← Contains business logic
-    │
-    ├──► [Cache] ── Cache Hit? → Return video metadata instantly
-    │        │
-    │        └── Cache Miss? → Query Database → Store in Cache → Return
-    │
-    ├──► [Database] ← Persistent storage for all data
-    │
-    └──► [Message Queue] ← For async tasks (e.g., update view count, log analytics)
-    │
-    ▼
-API Response → Video stream + metadata sent back to Client
+```mermaid
+graph TB
+    User["🧑 User"] --> Client
+
+    subgraph FE ["🎨 Frontend Layer"]
+        Client["📱 Mobile App / 🌐 Web Browser"]
+    end
+
+    Client -- "API Request:\nPlay video XYZ" --> LB
+
+    LB["⚖️ Load Balancer\nDistributes to least-loaded server"]
+
+    LB --> S1["🖥️ Server 1"]
+    LB --> S2["🖥️ Server 2"]
+    LB --> S3["🖥️ Server 3"]
+
+    subgraph BE ["⚙️ Backend Layer"]
+        S1 & S2 & S3
+    end
+
+    S1 & S2 & S3 -- "Check cache first" --> Cache["⚡ Cache\n(Fast - RAM)"]
+    Cache -- "✅ Hit → Return instantly" --> S1 & S2 & S3
+    Cache -- "❌ Miss → Fetch" --> DB[("🗄️ Database\n(Persistent Storage)")]
+    DB -- "Return data + Store in cache" --> Cache
+
+    S1 & S2 & S3 -- "Async tasks\n(view count, analytics)" --> MQ["📋 Message Queue\n(Kafka)"]
+    MQ --> Worker1["⚙️ Worker 1"]
+    MQ --> Worker2["⚙️ Worker 2"]
+
+    S1 & S2 & S3 -- "API Response:\nVideo stream + metadata" --> Client
+
+    style FE fill:#e1f5fe,stroke:#0288d1
+    style BE fill:#fff3e0,stroke:#f57c00
+    style Cache fill:#fff9c4,stroke:#f9a825
+    style DB fill:#e8f5e9,stroke:#388e3c
+    style MQ fill:#f3e5f5,stroke:#7b1fa2
 ```
 
 ---
