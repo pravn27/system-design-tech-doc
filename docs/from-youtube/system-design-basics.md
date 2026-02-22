@@ -5,12 +5,13 @@ sidebar_position: 1
 # System Design Basics
 
 - Ref: [System Design Basics | Client, Server, API, Database, Cache, Load Balancer, Monolith vs Microservice](https://www.youtube.com/watch?v=jq2XHMQwCUE) by **Mohit Chhabra**
+- Ref: https://miro.com/app/board/uXjVGZ6Blzc=/
 
 ---
 
 ## What is System Design?
 
-**Purpose:** System design is the process of defining the architecture, components, and interactions of a system to satisfy specific requirements. It answers the question — *"How do we build a software system that works reliably at scale?"*
+**Purpose:** System design is the process of defining the architecture, components, and interactions of a system to satisfy specific requirements. It answers the question — _"How do we build a software system that works reliably at scale?"_
 
 At a high level, system design deals with:
 
@@ -35,7 +36,7 @@ Think about **YouTube** — when you open the app and tap on a video, a lot happ
 - A **web browser** (Chrome, Safari) where you type `www.youtube.com`
 - A **smart TV** app
 
-All of these are clients — they are the *front door* through which users access a service.
+All of these are clients — they are the _front door_ through which users access a service.
 
 ### What is a Server?
 
@@ -45,8 +46,8 @@ In simple terms, if you write a piece of code on your laptop that takes an input
 
 ### Real-time Example — Restaurant Analogy
 
-| Restaurant        | Technical Equivalent |
-| ----------------- | -------------------- |
+| Restaurant         | Technical Equivalent |
+| ------------------ | -------------------- |
 | You (the customer) | Client               |
 | Chef               | Server               |
 | Waiter             | API                  |
@@ -149,13 +150,13 @@ You press the brake (frontend interaction), and the car stops (backend logic). Y
 
 ```mermaid
 graph TB
-    subgraph Frontend ["🎨 Frontend (What user sees)"]
+    subgraph Frontend ["🎨 Frontend"]
         MA["📱 Mobile App\n(Swift / Kotlin)"]
         WB["🌐 Web Browser\n(JS / HTML / CSS)"]
         TV["📺 Smart TV App"]
     end
 
-    subgraph Backend ["⚙️ Backend (Hidden from user)"]
+    subgraph Backend ["⚙️ Backend"]
         SV["🖥️ Server\n(Java / Node.js / Python)"]
         BL["📋 Business Logic\n(Processing, Filters, Sorting)"]
     end
@@ -192,13 +193,13 @@ On YouTube, every video, thumbnail, title, description, like count, and comment 
 
 ```mermaid
 graph LR
-    C["📱 Client"] -- "API Request" --> S["🖥️ Server\n(Business Logic)"]
-    S -- "Query data" --> DB[("🗄️ Database\n(All Data)")]
-    DB -- "Return data" --> S
-    S -- "Process + Apply logic" --> S
-    S -- "API Response" --> C
+    C["📱 Client"] -- "1. API Request" --> S["🖥️ Server"]
+    S -- "2. Query data" --> DB[("🗄️ Database\n(All Data)")]
+    DB -- "3. Return data" --> P["⚙️ Process\n+ Apply Logic"]
+    P -- "4. API Response" --> C
 
     style DB fill:#e8f5e9,stroke:#388e3c
+    style P fill:#fff3e0,stroke:#f57c00
 ```
 
 ---
@@ -215,10 +216,10 @@ graph LR
 
 ### Cache Hit vs Cache Miss
 
-| Scenario        | What Happens                                                                 | Analogy                                              |
-| --------------- | ---------------------------------------------------------------------------- | ---------------------------------------------------- |
-| **Cache Hit**   | Data is found in the cache → served directly, very fast                      | Salt is right in front of the chef — grab and use    |
-| **Cache Miss**  | Data is NOT in the cache → fetched from database, stored in cache for next time | Salt ran out — go to kitchen, refill, then use       |
+| Scenario       | What Happens                                                                    | Analogy                                           |
+| -------------- | ------------------------------------------------------------------------------- | ------------------------------------------------- |
+| **Cache Hit**  | Data is found in the cache → served directly, very fast                         | Salt is right in front of the chef — grab and use |
+| **Cache Miss** | Data is NOT in the cache → fetched from database, stored in cache for next time | Salt ran out — go to kitchen, refill, then use    |
 
 ### Real-time Example
 
@@ -278,14 +279,14 @@ Add **more machines** to distribute the load.
 
 ### Comparison
 
-| Aspect                  | Vertical Scaling                          | Horizontal Scaling                              |
-| ----------------------- | ----------------------------------------- | ----------------------------------------------- |
-| **Approach**            | Upgrade existing machine                  | Add more machines                               |
-| **Ease**                | Simple — just upgrade hardware            | Complex — manage multiple machines              |
-| **Communication**       | Fast (inter-process, local)               | Slower (network calls between machines)         |
-| **Limit**               | Has a ceiling (max hardware capacity)     | Virtually unlimited                             |
-| **Single Point of Failure** | Yes — one machine goes down, system is down | No — other machines continue working        |
-| **Cost**                | Expensive at high end                     | More cost-effective at scale                    |
+| Aspect                      | Vertical Scaling                            | Horizontal Scaling                      |
+| --------------------------- | ------------------------------------------- | --------------------------------------- |
+| **Approach**                | Upgrade existing machine                    | Add more machines                       |
+| **Ease**                    | Simple — just upgrade hardware              | Complex — manage multiple machines      |
+| **Communication**           | Fast (inter-process, local)                 | Slower (network calls between machines) |
+| **Limit**                   | Has a ceiling (max hardware capacity)       | Virtually unlimited                     |
+| **Single Point of Failure** | Yes — one machine goes down, system is down | No — other machines continue working    |
+| **Cost**                    | Expensive at high end                       | More cost-effective at scale            |
 
 ### Real-time Example
 
@@ -496,11 +497,11 @@ sequenceDiagram
 
 ### Comparison
 
-| Aspect        | Synchronous                        | Asynchronous                                 |
-| ------------- | ---------------------------------- | -------------------------------------------- |
-| **Client**    | Blocked, waiting                   | Free to do other tasks                       |
-| **Speed**     | Slower (sequential processing)     | Faster (parallel processing possible)        |
-| **Use case**  | Simple, immediate responses needed | Long-running tasks, background processing    |
+| Aspect       | Synchronous                        | Asynchronous                              |
+| ------------ | ---------------------------------- | ----------------------------------------- |
+| **Client**   | Blocked, waiting                   | Free to do other tasks                    |
+| **Speed**    | Slower (sequential processing)     | Faster (parallel processing possible)     |
+| **Use case** | Simple, immediate responses needed | Long-running tasks, background processing |
 
 ### Real-time Example
 
@@ -597,12 +598,12 @@ graph LR
 
 ### Why Stateless is Preferred
 
-| Aspect                | Stateful                                  | Stateless                                   |
-| --------------------- | ----------------------------------------- | ------------------------------------------- |
-| **Server dependency** | Request tied to a specific server         | Request can go to any server                |
-| **Horizontal scaling**| Limited — sticky sessions needed          | Works seamlessly with load balancers        |
-| **Fault tolerance**   | Server failure = lost client state        | Server failure = no impact, others take over|
-| **Scalability**       | Hard to scale                             | Easy to scale                               |
+| Aspect                 | Stateful                           | Stateless                                    |
+| ---------------------- | ---------------------------------- | -------------------------------------------- |
+| **Server dependency**  | Request tied to a specific server  | Request can go to any server                 |
+| **Horizontal scaling** | Limited — sticky sessions needed   | Works seamlessly with load balancers         |
+| **Fault tolerance**    | Server failure = lost client state | Server failure = no impact, others take over |
+| **Scalability**        | Hard to scale                      | Easy to scale                                |
 
 ### Real-time Example
 
@@ -675,13 +676,13 @@ graph TB
 
 ### Comparison
 
-| Aspect              | Monolithic                              | Microservices                                |
-| ------------------- | --------------------------------------- | -------------------------------------------- |
-| **Deployment**      | Deploy entire app at once               | Deploy individual services independently     |
-| **Scaling**         | Scale the whole app                     | Scale individual services as needed          |
-| **Fault impact**    | One failure can crash everything        | Failure is isolated to one service           |
-| **Complexity**      | Simple initially, complex at scale      | Complex initially, manageable at scale       |
-| **Best for**        | Small apps, startups, MVPs              | Large-scale, distributed systems             |
+| Aspect           | Monolithic                         | Microservices                            |
+| ---------------- | ---------------------------------- | ---------------------------------------- |
+| **Deployment**   | Deploy entire app at once          | Deploy individual services independently |
+| **Scaling**      | Scale the whole app                | Scale individual services as needed      |
+| **Fault impact** | One failure can crash everything   | Failure is isolated to one service       |
+| **Complexity**   | Simple initially, complex at scale | Complex initially, manageable at scale   |
+| **Best for**     | Small apps, startups, MVPs         | Large-scale, distributed systems         |
 
 ### Real-time Example
 
@@ -758,24 +759,24 @@ graph TB
 
 ## Summary
 
-| Concept              | One-Line Definition                                                        |
-| -------------------- | -------------------------------------------------------------------------- |
-| **Client**           | The platform (app/browser) through which users interact with the product   |
-| **Server**           | Machine(s) running the business logic that processes requests              |
-| **API**              | The intermediary that enables client-server communication                  |
-| **Frontend**         | User-facing layer — what users see and interact with                       |
-| **Backend**          | Server-side logic — how things actually work behind the scenes             |
-| **Database**         | Persistent storage for all application data                                |
-| **Cache**            | Fast temporary storage for frequently accessed data                        |
-| **Vertical Scaling** | Upgrading the existing machine's resources                                 |
+| Concept                | One-Line Definition                                                      |
+| ---------------------- | ------------------------------------------------------------------------ |
+| **Client**             | The platform (app/browser) through which users interact with the product |
+| **Server**             | Machine(s) running the business logic that processes requests            |
+| **API**                | The intermediary that enables client-server communication                |
+| **Frontend**           | User-facing layer — what users see and interact with                     |
+| **Backend**            | Server-side logic — how things actually work behind the scenes           |
+| **Database**           | Persistent storage for all application data                              |
+| **Cache**              | Fast temporary storage for frequently accessed data                      |
+| **Vertical Scaling**   | Upgrading the existing machine's resources                               |
 | **Horizontal Scaling** | Adding more machines to distribute load                                  |
-| **SPOF**             | A component whose failure brings down the entire system                    |
-| **Auto-Scaling**     | Automatically adjusting server count based on traffic                      |
-| **Load Balancer**    | Distributes requests evenly across multiple servers                        |
-| **Sync**             | Client waits (blocks) for the response                                     |
-| **Async**            | Client is free after sending request; notified when response is ready      |
-| **Message Queue**    | Holds tasks for async processing (e.g., Kafka, RabbitMQ)                  |
-| **Stateful**         | Server stores client state — request tied to specific server               |
-| **Stateless**        | Server stores no client state — any server can handle any request          |
-| **Monolithic**       | Entire app as a single deployable unit                                     |
-| **Microservices**    | App split into independent, separately deployable services                 |
+| **SPOF**               | A component whose failure brings down the entire system                  |
+| **Auto-Scaling**       | Automatically adjusting server count based on traffic                    |
+| **Load Balancer**      | Distributes requests evenly across multiple servers                      |
+| **Sync**               | Client waits (blocks) for the response                                   |
+| **Async**              | Client is free after sending request; notified when response is ready    |
+| **Message Queue**      | Holds tasks for async processing (e.g., Kafka, RabbitMQ)                 |
+| **Stateful**           | Server stores client state — request tied to specific server             |
+| **Stateless**          | Server stores no client state — any server can handle any request        |
+| **Monolithic**         | Entire app as a single deployable unit                                   |
+| **Microservices**      | App split into independent, separately deployable services               |
