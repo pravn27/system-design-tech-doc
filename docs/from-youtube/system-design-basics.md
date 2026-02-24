@@ -391,26 +391,30 @@ Use **horizontal scaling** and **replication**:
 
 Major companies like **Netflix** deploy their servers across multiple AWS regions worldwide. If the US-East data center goes down, US-West or EU servers continue serving users. This is why Netflix rarely has a complete global outage.
 
+**❌ With SPOF (Bad):**
+
 ```mermaid
-graph TB
-    subgraph SPOF ["❌ Single Point of Failure (Bad)"]
-        C1["📱 Client"] --> S_one["🖥️ Single Server"]
-        S_one -- "Server crashes 💥" --> Down["🚫 Entire System DOWN"]
-    end
+graph LR
+    C1["📱 Client"] --> S_one["🖥️ Single Server"]
+    S_one -- "Crashes 💥" --> Down["🚫 System DOWN"]
 
-    subgraph NoSPOF ["✅ No SPOF with Horizontal Scaling (Good)"]
-        C2["📱 Client"] --> LB["⚖️ Load Balancer"]
-        LB --> S_a["🖥️ Server 1 ✅"]
-        LB --> S_b["🖥️ Server 2 💥 Down"]
-        LB --> S_c["🖥️ Server 3 ✅"]
-        LB --> S_d["🖥️ Server 4 ✅"]
-        S_a --> Up["✅ System keeps running!"]
-        S_c --> Up
-        S_d --> Up
-    end
+    style S_one fill:#ffcdd2,stroke:#c62828
+    style Down fill:#ffebee,stroke:#c62828
+```
 
-    style SPOF fill:#ffebee,stroke:#c62828
-    style NoSPOF fill:#e8f5e9,stroke:#2e7d32
+**✅ No SPOF (Good):**
+
+```mermaid
+graph LR
+    C2["📱 Client"] --> LB["⚖️ Load Balancer"]
+    LB --> S_a["🖥️ Server 1 ✅"]
+    LB --> S_b["🖥️ Server 2 💥"]
+    LB --> S_c["🖥️ Server 3 ✅"]
+    S_a --> Up["✅ System runs!"]
+    S_c --> Up
+
+    style S_b fill:#ffcdd2,stroke:#c62828
+    style Up fill:#c8e6c9,stroke:#2e7d32
 ```
 
 ---
@@ -432,28 +436,33 @@ Cloud providers like **AWS**, **Google Cloud**, and **Azure** offer auto-scaling
 
 During **Amazon Prime Day**, traffic surges massively. AWS auto-scaling detects the increased load and spins up hundreds of additional servers automatically. Once the sale ends and traffic normalizes, those extra servers are decommissioned. The business only pays for what it uses.
 
+**📊 Normal Traffic:**
+
 ```mermaid
 graph LR
-    subgraph Normal ["📊 Normal Traffic"]
-        N_LB["⚖️ Load Balancer"] --> N_S1["🖥️ Server 1"]
-        N_LB --> N_S2["🖥️ Server 2"]
-    end
+    N_LB["⚖️ Load Balancer"] --> N_S1["🖥️ Server 1"]
+    N_LB --> N_S2["🖥️ Server 2"]
 
-    Normal -- "🔥 Traffic spikes!\nAuto-scaling triggers" --> Peak
-
-    subgraph Peak ["📈 Peak Traffic (Auto-Scaled)"]
-        P_LB["⚖️ Load Balancer"] --> P_S1["🖥️ Server 1"]
-        P_LB --> P_S2["🖥️ Server 2"]
-        P_LB --> P_S3["🖥️ Server 3 ✨ New"]
-        P_LB --> P_S4["🖥️ Server 4 ✨ New"]
-        P_LB --> P_S5["🖥️ Server 5 ✨ New"]
-    end
-
-    Peak -- "📉 Traffic drops\nScale down" --> Normal
-
-    style Normal fill:#e3f2fd,stroke:#1565c0
-    style Peak fill:#fff3e0,stroke:#e65100
+    style N_LB fill:#fff9c4,stroke:#f9a825
 ```
+
+**📈 Peak Traffic (Auto-Scaled):**
+
+```mermaid
+graph LR
+    P_LB["⚖️ Load Balancer"] --> P_S1["🖥️ Server 1"]
+    P_LB --> P_S2["🖥️ Server 2"]
+    P_LB --> P_S3["🖥️ Server 3 ✨"]
+    P_LB --> P_S4["🖥️ Server 4 ✨"]
+    P_LB --> P_S5["🖥️ Server 5 ✨"]
+
+    style P_LB fill:#fff9c4,stroke:#f9a825
+    style P_S3 fill:#c8e6c9,stroke:#2e7d32
+    style P_S4 fill:#c8e6c9,stroke:#2e7d32
+    style P_S5 fill:#c8e6c9,stroke:#2e7d32
+```
+
+> Traffic spikes → auto-scaling adds servers (green). Traffic drops → extra servers removed. You only pay for what you use.
 
 ---
 
