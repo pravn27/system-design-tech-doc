@@ -783,39 +783,30 @@ graph TB
 Here's how all the components work together when you open YouTube and play a video:
 
 ```mermaid
-graph TB
-    User["🧑 User"] --> Client
+graph TD
+    U["🧑 User"] -- "1. Click Play video" --> FE["📱 Frontend"]
+    FE -- "2. API Request" --> LB["⚖️ Load Balancer"]
 
-    subgraph FE ["🎨 Frontend Layer"]
-        Client["📱 Mobile App / 🌐 Web Browser"]
-    end
+    LB -- "3. Route request" --> S1["🖥️ Server 1"]
+    LB -- "3. Route request" --> S2["🖥️ Server 2"]
+    LB -- "3. Route request" --> S3["🖥️ Server 3"]
 
-    Client -- "API Request:\nPlay video XYZ" --> LB
+    S1 & S2 & S3 -- "4. Check cache" --> C["⚡ Cache"]
 
-    LB["⚖️ Load Balancer\nDistributes to least-loaded server"]
+    C -- "✅ Hit" --> R["Return data"]
+    C -- "❌ Miss" --> DB[("🗄️ Database")]
+    DB -- "5. Fetch data" --> C
 
-    LB --> S1["🖥️ Server 1"]
-    LB --> S2["🖥️ Server 2"]
-    LB --> S3["🖥️ Server 3"]
+    S1 & S2 & S3 -- "6. Async tasks" --> MQ["📋 Message Queue"]
+    MQ --> W1["⚙️ Worker 1"]
+    MQ --> W2["⚙️ Worker 2"]
 
-    subgraph BE ["⚙️ Backend Layer"]
-        S1 & S2 & S3
-    end
-
-    S1 & S2 & S3 -- "Check cache first" --> Cache["⚡ Cache\n(Fast - RAM)"]
-    Cache -- "✅ Hit → Return instantly" --> S1 & S2 & S3
-    Cache -- "❌ Miss → Fetch" --> DB[("🗄️ Database\n(Persistent Storage)")]
-    DB -- "Return data + Store in cache" --> Cache
-
-    S1 & S2 & S3 -- "Async tasks\n(view count, analytics)" --> MQ["📋 Message Queue\n(Kafka)"]
-    MQ --> Worker1["⚙️ Worker 1"]
-    MQ --> Worker2["⚙️ Worker 2"]
-
-    S1 & S2 & S3 -- "API Response:\nVideo stream + metadata" --> Client
+    R -- "7. API Response" --> FE
+    FE -- "8. Play video" --> U
 
     style FE fill:#e1f5fe,stroke:#0288d1
-    style BE fill:#fff3e0,stroke:#f57c00
-    style Cache fill:#fff9c4,stroke:#f9a825
+    style LB fill:#fff9c4,stroke:#f9a825
+    style C fill:#fff9c4,stroke:#f9a825
     style DB fill:#e8f5e9,stroke:#388e3c
     style MQ fill:#f3e5f5,stroke:#7b1fa2
 ```
