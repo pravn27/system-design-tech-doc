@@ -753,27 +753,38 @@ graph TB
 
 **Netflix** started as a monolithic application. As it grew to serve 200+ million users, they migrated to microservices. Now, the **recommendation engine**, **video streaming**, **user authentication**, **billing**, and **content catalog** are all separate microservices. If the recommendation engine has a bug, you can still stream videos — the streaming service is completely independent.
 
+**🏢 Monolithic — One unit, tightly coupled:**
+
 ```mermaid
-graph TB
-    subgraph Mono ["🏢 Monolithic Architecture"]
-        M_ALL["Single Deployment Unit\n\n🔐 Auth\n📰 User Feed\n👤 Profile\n🛒 Orders\n💳 Payments\n\nAll tightly coupled\nin ONE codebase"]
-        M_BUG["🐛 Bug in Orders?\n💥 Entire system crashes!"]
-        M_ALL --> M_BUG
-    end
+graph LR
+    C["📱 Client"] --> App["🏢 Single App\n🔐 Auth | 📰 Feed | 👤 Profile\n🛒 Orders | 💳 Payments"]
+    App --> DB[("🗄️ Database")]
+    App -- "🐛 Bug in Orders" --> Crash["💥 Entire system crashes!"]
 
-    subgraph Micro ["🏘️ Microservices Architecture"]
-        direction LR
-        MS1["🔐 Auth\nService"]
-        MS2["📰 Feed\nService"]
-        MS3["👤 Profile\nService"]
-        MS4["🛒 Orders\nService"]
-        MS5["💳 Payment\nService"]
-        MS4_bug["🐛 Orders down?\n✅ Others still work!"]
-        MS4 --> MS4_bug
-    end
+    style App fill:#ffcdd2,stroke:#c62828
+    style Crash fill:#ffebee,stroke:#c62828
+```
 
-    style Mono fill:#ffebee,stroke:#c62828
-    style Micro fill:#e8f5e9,stroke:#2e7d32
+**🏘️ Microservices — Independent services, loosely coupled:**
+
+```mermaid
+graph LR
+    C2["📱 Client"] --> GW["🔌 API Gateway"]
+    GW --> MS1["🔐 Auth"]
+    GW --> MS2["📰 Feed"]
+    GW --> MS3["👤 Profile"]
+    GW --> MS4["🛒 Orders"]
+    GW --> MS5["💳 Payments"]
+
+    MS1 --> DB1[("🗄️ DB")]
+    MS2 --> DB2[("🗄️ DB")]
+    MS4 --> DB3[("🗄️ DB")]
+
+    MS4 -- "🐛 Orders down" --> Down["❌ Only Orders affected"]
+    MS1 & MS2 & MS3 & MS5 --> OK["✅ Others still work!"]
+
+    style Down fill:#ffcdd2,stroke:#c62828
+    style OK fill:#c8e6c9,stroke:#2e7d32
 ```
 
 ---
